@@ -1,0 +1,28 @@
+name: Feature request
+description: Template for feature request
+title: '[Feature request]: '
+labels: ["enhancement"]
+body:
+  - type: checkboxes
+    id: latest-version
+    attributes:
+      label: General Info
+      options:
+        - label: I installed the latest version of Supabase Kt
+          required: true
+        - label: I checked for similar feature requests
+          required: true
+  - type: textarea
+    id: feature-request
+    attributes:
+      label: Feature request
+      description: Please describe what you think should be added to Supabase Kt
+    validations:
+      required: true
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Usecase
+      description: 'Please provide an use case for your feature request'
+    validations:
+      required: false
