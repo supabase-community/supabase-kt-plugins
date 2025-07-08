@@ -20,8 +20,12 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
-import io.github.jan.supabase.compose.auth.ui.*
+import io.github.jan.supabase.compose.auth.ui.AuthIcons
+import io.github.jan.supabase.compose.auth.ui.AuthState
+import io.github.jan.supabase.compose.auth.ui.FormComponent
+import io.github.jan.supabase.compose.auth.ui.FormValidator
 import io.github.jan.supabase.compose.auth.ui.annotations.AuthUiExperimental
+import io.github.jan.supabase.compose.auth.ui.rememberMailIcon
 
 /**
  * A custom email input field with validation and pre-defined styling.

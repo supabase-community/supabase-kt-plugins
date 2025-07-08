@@ -37,6 +37,7 @@ kotlin {
                 api(compose.ui)
                 addModules(SupabaseModule.AUTH)
                 api(compose.material3)
+                api(compose.components.resources)
             }
         }
         val androidMain by getting {
@@ -58,4 +59,10 @@ tasks.withType<LintModelMetadataTask> {
 }
 tasks.withType<AndroidLintAnalysisTask> {
     dependsOn("generateResourceAccessorsForAndroidUnitTest")
+}
+
+compose {
+    resources {
+        packageOfResClass = "io.github.jan.supabase.compose.auth.ui.resources"
+    }
 }

@@ -12,8 +12,8 @@ import androidx.compose.ui.unit.toSize
 import com.caverock.androidsvg.PreserveAspectRatio
 import com.caverock.androidsvg.SVG
 import io.github.jan.supabase.annotations.SupabaseInternal
-import io.ktor.utils.io.*
-import io.ktor.utils.io.jvm.javaio.*
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.jvm.javaio.toInputStream
 import kotlin.math.ceil
 
 @SupabaseInternal
