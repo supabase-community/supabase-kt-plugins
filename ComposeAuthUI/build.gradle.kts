@@ -11,7 +11,7 @@ plugins {
 }
 
 description = "Extends supabase-kt with a Apollo GraphQL Client"
-version = "0.1.0"
+version = supabaseVersion
 
 repositories {
     mavenCentral()

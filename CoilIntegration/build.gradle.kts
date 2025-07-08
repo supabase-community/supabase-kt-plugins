@@ -4,7 +4,7 @@ plugins {
 }
 
 description = "Extends supabase-kt with a Coil integration for easy image loading"
-version = "1.0.0"
+version = supabaseVersion
 
 repositories {
     mavenCentral()

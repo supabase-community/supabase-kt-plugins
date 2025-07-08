@@ -4,7 +4,7 @@ plugins {
 }
 
 description = "Extends supabase-kt with a Sketch integration for easy image loading"
-version = "0.1.0"
+version = supabaseVersion
 
 repositories {
     mavenCentral()
