@@ -1,4 +1,4 @@
-# Supabase-kt Coil 3 Integration
+# Supabase-kt Sketch Integration
 
 Extends supabase-kt with a [Sketch](https://github.com/panpf/sketch) integration for image loading.
 
