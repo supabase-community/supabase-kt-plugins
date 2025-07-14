@@ -15,6 +15,7 @@ plugins {
 include("test-common")
 
 // Misc plugins
+include(":bom")
 include(":ApolloGraphQL")
 include(":ComposeAuth")
 include(":ComposeAuthUI")
