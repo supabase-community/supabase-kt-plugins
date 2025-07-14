@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id(libs.plugins.kotlin.multiplatform.get().pluginId)
     id(libs.plugins.android.library.get().pluginId)
@@ -14,12 +16,13 @@ repositories {
 @OptIn(org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi::class)
 kotlin {
     defaultConfig()
-    composeTargets()
+    jvmTargets(JvmTarget.JVM_1_8)
+    iosTargets()
     sourceSets {
         val commonMain by getting {
             dependencies {
                 addModules(SupabaseModule.STORAGE)
-                api(libs.sketch.http)
+                implementation(libs.sketch.http)
             }
         }
         val commonTest by getting {
