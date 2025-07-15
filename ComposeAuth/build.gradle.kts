@@ -33,14 +33,14 @@ kotlin {
     jvmToolchain(11)
     composeTargets(JvmTarget.JVM_11)
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 addModules(SupabaseModule.AUTH)
                 implementation(compose.runtime)
           //      implementation(libs.krypto)
             }
         }
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 api(libs.android.google.id)
                 api(libs.androidx.credentials)

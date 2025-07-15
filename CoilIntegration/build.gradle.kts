@@ -16,7 +16,7 @@ kotlin {
     defaultConfig()
     configuredAndroidTarget()
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 addModules(SupabaseModule.STORAGE)
                 api(libs.coil2)

@@ -21,7 +21,6 @@ include(":ComposeAuth")
 include(":ComposeAuthUI")
 include(":Coil3Integration")
 include(":CoilIntegration")
-include(":ImageLoaderIntegration")
 //include(":SketchIntegration")
 
 // Renames
@@ -30,6 +29,5 @@ project(":ComposeAuth").name = "compose-auth"
 project(":ComposeAuthUI").name = "compose-auth-ui"
 project(":Coil3Integration").name = "coil3-integration"
 project(":CoilIntegration").name = "coil-integration"
-project(":ImageLoaderIntegration").name = "imageloader-integration"
 //project(":SketchIntegration").name = "sketch-integration"
 rootProject.name = "supabase-kt-plugins"

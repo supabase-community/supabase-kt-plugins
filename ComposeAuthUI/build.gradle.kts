@@ -32,7 +32,7 @@ kotlin {
     composeTargets(JvmTarget.JVM_11)
     jvmToolchain(11)
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 api(compose.ui)
                 addModules(SupabaseModule.AUTH)
@@ -40,7 +40,7 @@ kotlin {
                 api(compose.components.resources)
             }
         }
-        val androidMain by getting {
+        androidMain {
             dependencies {
                 implementation(libs.androidsvg)
             }

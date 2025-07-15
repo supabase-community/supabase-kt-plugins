@@ -16,7 +16,7 @@ kotlin {
     defaultConfig()
     composeTargets()
     sourceSets {
-        val commonMain by getting {
+        commonMain {
             dependencies {
                 addModules(SupabaseModule.STORAGE)
                 api(libs.bundles.coil3)
