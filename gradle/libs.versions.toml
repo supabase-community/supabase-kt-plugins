@@ -64,7 +64,7 @@ coil3 = { module = "io.coil-kt.coil3:coil", version.ref = "coil3" }
 coil3-network-core = { module = "io.coil-kt.coil3:coil-network-core", version.ref = "coil3" }
 coil2 = { module = "io.coil-kt:coil", version.ref = "coil2" }
 imageloader = { module = "io.github.qdsfdhvh:image-loader", version.ref = "imageloader" }
-sketch-http = { module = "io.github.panpf.sketch4:sketch-http", version.ref = "sketch" }
+sketch-http = { module = "io.github.panpf.sketch4:sketch-http-core", version.ref = "sketch" }
 
 [bundles]
 testing = ["kotlinx-coroutines-test", "multiplatform-settings-test", "ktor-client-mock", "kotlin-test"]

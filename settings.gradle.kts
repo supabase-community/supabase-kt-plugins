@@ -21,7 +21,7 @@ include(":ComposeAuth")
 include(":ComposeAuthUI")
 include(":Coil3Integration")
 include(":CoilIntegration")
-//include(":SketchIntegration")
+include(":SketchIntegration")
 
 // Renames
 project(":ApolloGraphQL").name = "apollo-graphql"
@@ -29,5 +29,5 @@ project(":ComposeAuth").name = "compose-auth"
 project(":ComposeAuthUI").name = "compose-auth-ui"
 project(":Coil3Integration").name = "coil3-integration"
 project(":CoilIntegration").name = "coil-integration"
-//project(":SketchIntegration").name = "sketch-integration"
+project(":SketchIntegration").name = "sketch-integration"
 rootProject.name = "supabase-kt-plugins"
