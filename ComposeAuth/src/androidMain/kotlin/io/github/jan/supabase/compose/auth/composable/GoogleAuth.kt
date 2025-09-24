@@ -88,7 +88,7 @@ internal fun ComposeAuth.signInWithCM(
                     parseCredential(
                         response.credential,
                         onResult
-                    ) { onIdToken(this@signInWithCM, it, Google, status.nonce, status.extraData) }
+                    ) { onIdToken(this@signInWithCM, IdTokenCallback.Result(it, Google, status.nonce, status.extraData)) }
                 } else {
                     fallback.invoke()
                 }

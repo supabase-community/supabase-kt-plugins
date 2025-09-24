@@ -72,6 +72,7 @@ val action = supabase.composeAuth.rememberSignInWithGoogle(
             is NativeSignInResult.NetworkError -> {}
         }
     },
+    onIdToken = ComposeAuth.LINK_IDENTITY_CALLBACK, // optional: if you want to link an identity to an existing account rather than signing in
     fallback = { // optional: add custom error handling, not required by default
 
     }
@@ -83,6 +84,8 @@ Button(
     Text("Google Login")
 }
 ```
+
+You can also provide a custom `onIdToken` value, if you want to handle the signing-in yourself.
 
 # Native Google Auth on Android
 

@@ -79,12 +79,12 @@ interface ComposeAuth : SupabasePlugin<ComposeAuth.Config>, CustomSerializationP
         /**
          * This callback can be used to sign-in/sign-up a user upon receiving an id token from native auth.
          */
-        val SIGN_IN_CALLBACK = IdTokenCallback { composeAuth, idToken, provider, nonce, extra ->
+        val SIGN_IN_CALLBACK = IdTokenCallback { composeAuth, result ->
             composeAuth.supabaseClient.auth.signInWith(IDToken) {
-                this.provider = provider
-                this.idToken = idToken
-                this.nonce = nonce
-                data = extra
+                this.provider = result.provider
+                this.idToken = result.idToken
+                this.nonce = result.nonce
+                data = result.extraData
             }
         }
 
@@ -92,9 +92,9 @@ interface ComposeAuth : SupabasePlugin<ComposeAuth.Config>, CustomSerializationP
          * This callback can be used to link an identity to an existing and logged-in user upon receiving an id token from native auth.
          * Can also be used to upgrade an anonymous user.
          */
-        val LINK_IDENTITY_CALLBACK = IdTokenCallback { composeAuth, idToken, provider, nonce, _ ->
-            composeAuth.supabaseClient.auth.linkIdentityWithIdToken(provider, idToken) {
-                this.nonce = nonce
+        val LINK_IDENTITY_CALLBACK = IdTokenCallback { composeAuth, result ->
+            composeAuth.supabaseClient.auth.linkIdentityWithIdToken(result.provider, result.idToken) {
+                this.nonce = result.nonce
             }
         }
 

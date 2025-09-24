@@ -11,11 +11,22 @@ fun interface IdTokenCallback {
     /**
      * Invokes the callback
      * @param composeAuth The [ComposeAuth] instance
+     * @param result The result of the id token callback
+     */
+    suspend operator fun invoke(composeAuth: ComposeAuth, result: Result)
+
+    /**
+     * The result of the id token callback
      * @param idToken The id token received
      * @param provider The native auth provider
      * @param nonce an optional nonce
      * @param extraData Extra data to pass to the sign-in
      */
-    suspend operator fun invoke(composeAuth: ComposeAuth, idToken: String, provider: IDTokenProvider, nonce: String?, extraData: JsonObject?)
+    data class Result(
+        val idToken: String,
+        val provider: IDTokenProvider,
+        val nonce: String?,
+        val extraData: JsonObject?
+    )
 
 }
