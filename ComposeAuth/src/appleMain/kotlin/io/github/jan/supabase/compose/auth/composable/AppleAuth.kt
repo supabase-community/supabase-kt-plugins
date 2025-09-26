@@ -7,9 +7,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import io.github.jan.supabase.auth.providers.Apple
 import io.github.jan.supabase.compose.auth.ComposeAuth
+import io.github.jan.supabase.compose.auth.IdTokenCallback
 import io.github.jan.supabase.compose.auth.hash
-import io.github.jan.supabase.compose.auth.signInWithApple
 import kotlinx.cinterop.BetaInteropApi
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ensureActive
@@ -38,6 +39,7 @@ import platform.darwin.NSObject
  * On unsupported platforms it will use the [fallback]
  *
  * @param onResult Callback for the result of the login
+ * @param onIdToken Callback for the id token. By default, it will be passed to the [io.github.jan.supabase.auth.Auth] plugin to sign-in.
  * @param fallback Fallback function for unsupported platforms
  * @return [NativeSignInState]
  */
@@ -46,6 +48,7 @@ import platform.darwin.NSObject
 @Composable
 actual fun ComposeAuth.rememberSignInWithApple(
     onResult: (NativeSignInResult) -> Unit,
+    onIdToken: IdTokenCallback,
     fallback: suspend () -> Unit
 ): NativeSignInState {
     val state = remember { NativeSignInState(this.serializer) }
@@ -67,7 +70,7 @@ actual fun ComposeAuth.rememberSignInWithApple(
                     }
 
                     authorizationDelegate =
-                        AuthorizationDelegate(this@rememberSignInWithApple, scope, status) {
+                        AuthorizationDelegate(onIdToken, this@rememberSignInWithApple, scope, status) {
                             onResult.invoke(it)
                             state.reset()
                         }
@@ -94,6 +97,7 @@ actual fun ComposeAuth.rememberSignInWithApple(
 
 @BetaInteropApi
 private class AuthorizationDelegate(
+    private val onIdToken: IdTokenCallback,
     private val composeAuth: ComposeAuth,
     private val scope: CoroutineScope,
     private val status: NativeSignInStatus.Started,
@@ -110,7 +114,9 @@ private class AuthorizationDelegate(
                 ?.let { NSString.create(it, encoding = NSUTF8StringEncoding)?.toString() }
                 ?.let { idToken ->
                     scope.launch {
-                        composeAuth.signInWithApple(idToken, status.nonce, status.extraData)
+                        onIdToken.invoke(composeAuth,
+                            IdTokenCallback.Result(idToken, Apple, status.nonce, status.extraData)
+                        )
                         onResult.invoke(NativeSignInResult.Success)
                     }
                 }

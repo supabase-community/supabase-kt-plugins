@@ -3,6 +3,7 @@ package io.github.jan.supabase.compose.auth.composable
 import androidx.compose.runtime.Composable
 import io.github.jan.supabase.auth.providers.Apple
 import io.github.jan.supabase.compose.auth.ComposeAuth
+import io.github.jan.supabase.compose.auth.IdTokenCallback
 import io.github.jan.supabase.compose.auth.fallbackLogin
 
 /**
@@ -15,4 +16,8 @@ import io.github.jan.supabase.compose.auth.fallbackLogin
  * @return [NativeSignInState]
  */
 @Composable
-expect fun ComposeAuth.rememberSignInWithApple(onResult: (NativeSignInResult) -> Unit, fallback: suspend () -> Unit = { fallbackLogin(Apple) }) : NativeSignInState
+expect fun ComposeAuth.rememberSignInWithApple(
+    onResult: (NativeSignInResult) -> Unit,
+    onIdToken: IdTokenCallback = ComposeAuth.SIGN_IN_CALLBACK,
+    fallback: suspend () -> Unit = { fallbackLogin(Apple) }
+) : NativeSignInState

@@ -3,8 +3,6 @@ package io.github.jan.supabase.compose.auth
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.SupabaseSerializer
 import io.github.jan.supabase.auth.auth
-import io.github.jan.supabase.auth.providers.Apple
-import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.auth.providers.IDTokenProvider
 import io.github.jan.supabase.auth.providers.builtin.IDToken
 import io.github.jan.supabase.auth.status.SessionStatus
@@ -20,10 +18,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.serialization.json.JsonObject
 
 /**
- * Plugin that extends the [Auth] Module with composable function that enables an easy implementation of Native Auth.
+ * Plugin that extends the [io.github.jan.supabase.auth.Auth] Module with composable function that enables an easy implementation of Native Auth.
  * Currently supported Google Login (Android with OneTap or CM on Android 14+) and Apple Login (iOS), other compose-supported targets rely on GoTrue login.
  *
  * To use it, install GoTrue and ComposeAuth
@@ -79,6 +76,28 @@ interface ComposeAuth : SupabasePlugin<ComposeAuth.Config>, CustomSerializationP
 
         override val logger: SupabaseLogger = SupabaseClient.createLogger("Supabase-ComposeAuth")
 
+        /**
+         * This callback can be used to sign-in/sign-up a user upon receiving an id token from native auth.
+         */
+        val SIGN_IN_CALLBACK = IdTokenCallback { composeAuth, result ->
+            composeAuth.supabaseClient.auth.signInWith(IDToken) {
+                this.provider = result.provider
+                this.idToken = result.idToken
+                this.nonce = result.nonce
+                data = result.extraData
+            }
+        }
+
+        /**
+         * This callback can be used to link an identity to an existing and logged-in user upon receiving an id token from native auth.
+         * Can also be used to upgrade an anonymous user.
+         */
+        val LINK_IDENTITY_CALLBACK = IdTokenCallback { composeAuth, result ->
+            composeAuth.supabaseClient.auth.linkIdentityWithIdToken(result.provider, result.idToken) {
+                this.nonce = result.nonce
+            }
+        }
+
         override fun create(supabaseClient: SupabaseClient, config: Config): ComposeAuth {
             return ComposeAuthImpl(config, supabaseClient)
         }
@@ -121,24 +140,6 @@ internal class ComposeAuthImpl(
         }
     }
 
-}
-
-internal suspend fun ComposeAuth.signInWithGoogle(idToken: String, nonce: String?, extraData: JsonObject?) {
-    supabaseClient.auth.signInWith(IDToken) {
-        provider = Google
-        this.idToken = idToken
-        this.nonce = nonce
-        data = extraData
-    }
-}
-
-internal suspend fun ComposeAuth.signInWithApple(idToken: String, nonce: String?, extraData: JsonObject?) {
-    supabaseClient.auth.signInWith(IDToken) {
-        provider = Apple
-        this.idToken = idToken
-        this.nonce = nonce
-        data = extraData
-    }
 }
 
 internal suspend fun ComposeAuth.fallbackLogin(provider: IDTokenProvider) {

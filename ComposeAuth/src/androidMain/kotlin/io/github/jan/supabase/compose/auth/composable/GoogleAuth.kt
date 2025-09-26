@@ -16,18 +16,19 @@ import androidx.credentials.exceptions.GetCredentialCancellationException
 import androidx.credentials.exceptions.GetCredentialException
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.libraries.identity.googleid.GoogleIdTokenParsingException
+import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.compose.auth.ComposeAuth
 import io.github.jan.supabase.compose.auth.GoogleLoginConfig
+import io.github.jan.supabase.compose.auth.IdTokenCallback
 import io.github.jan.supabase.compose.auth.applicationContext
 import io.github.jan.supabase.compose.auth.getActivity
 import io.github.jan.supabase.compose.auth.getGoogleBottomSheetOptions
 import io.github.jan.supabase.compose.auth.getGoogleButtonOptions
 import io.github.jan.supabase.compose.auth.hash
-import io.github.jan.supabase.compose.auth.signInWithGoogle
 import io.github.jan.supabase.logging.d
 import io.github.jan.supabase.logging.e
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
-import kotlin.coroutines.coroutineContext
 
 private data class GoogleRequestOptions(
     val config: GoogleLoginConfig?,
@@ -42,21 +43,24 @@ private data class GoogleRequestOptions(
  * On unsupported platforms it will use the [fallback]
  *
  * @param onResult Callback for the result of the login
+ * @param onIdToken Callback for the id token. By default, it will be passed to the [io.github.jan.supabase.auth.Auth] plugin to sign-in.
  * @param fallback Fallback function for unsupported platforms
  * @return [NativeSignInState]
  */
 @Composable
 actual fun ComposeAuth.rememberSignInWithGoogle(
     onResult: (NativeSignInResult) -> Unit,
+    onIdToken: IdTokenCallback,
     type: GoogleDialogType,
     fallback: suspend () -> Unit)
 : NativeSignInState {
-    return signInWithCM(onResult, type, fallback)
+    return signInWithCM(onResult, onIdToken, type, fallback)
 }
 
 @Composable
 internal fun ComposeAuth.signInWithCM(
     onResult: (NativeSignInResult) -> Unit,
+    onIdToken: IdTokenCallback,
     type: GoogleDialogType,
     fallback: suspend () -> Unit
 ): NativeSignInState{
@@ -84,7 +88,7 @@ internal fun ComposeAuth.signInWithCM(
                     parseCredential(
                         response.credential,
                         onResult
-                    ) { signInWithGoogle(it, status.nonce, status.extraData) }
+                    ) { onIdToken(this@signInWithCM, IdTokenCallback.Result(it, Google, status.nonce, status.extraData)) }
                 } else {
                     fallback.invoke()
                 }
@@ -138,7 +142,7 @@ private suspend fun parseCredential(
                         )
                     )
                 } catch (e: Exception) {
-                    coroutineContext.ensureActive()
+                    currentCoroutineContext().ensureActive()
                     ComposeAuth.logger.e(e) { "Error while logging into Supabase with Google ID Token Credential" }
                     onResult.invoke(
                         NativeSignInResult.Error(

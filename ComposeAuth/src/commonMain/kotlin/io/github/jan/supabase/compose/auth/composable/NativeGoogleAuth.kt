@@ -4,6 +4,7 @@ package io.github.jan.supabase.compose.auth.composable
 import androidx.compose.runtime.Composable
 import io.github.jan.supabase.auth.providers.Google
 import io.github.jan.supabase.compose.auth.ComposeAuth
+import io.github.jan.supabase.compose.auth.IdTokenCallback
 import io.github.jan.supabase.compose.auth.fallbackLogin
 
 /**
@@ -32,6 +33,7 @@ enum class GoogleDialogType {
 @Composable
 expect fun ComposeAuth.rememberSignInWithGoogle(
     onResult: (NativeSignInResult) -> Unit = {},
+    onIdToken: IdTokenCallback = ComposeAuth.SIGN_IN_CALLBACK,
     type: GoogleDialogType = GoogleDialogType.DIALOG,
     fallback: suspend () -> Unit = {
         fallbackLogin(Google)
