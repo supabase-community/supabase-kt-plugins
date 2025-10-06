@@ -114,10 +114,14 @@ private class AuthorizationDelegate(
                 ?.let { NSString.create(it, encoding = NSUTF8StringEncoding)?.toString() }
                 ?.let { idToken ->
                     scope.launch {
-                        onIdToken.invoke(composeAuth,
-                            IdTokenCallback.Result(idToken, Apple, status.nonce, status.extraData)
-                        )
-                        onResult.invoke(NativeSignInResult.Success)
+                        try {
+                            onIdToken.invoke(composeAuth,
+                                IdTokenCallback.Result(idToken, Apple, status.nonce, status.extraData)
+                            )
+                            onResult.invoke(NativeSignInResult.Success)
+                        } catch(e: Exception) {
+                            onResult.invoke(NativeSignInResult.Error(e.message ?: "error"))
+                        }
                     }
                 }
         } catch (e: Exception) {
