@@ -73,7 +73,7 @@ val action = supabase.composeAuth.rememberSignInWithGoogle(
         }
     },
     onIdToken = ComposeAuth.LINK_IDENTITY_CALLBACK, // optional: if you want to link an identity to an existing account rather than signing in
-    fallback = { // optional: add custom error handling, not required by default
+    fallback = { // optional: override custom fallback handling, not required by default
 
     }
 )
