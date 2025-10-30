@@ -42,7 +42,7 @@ kotlin {
             }
             it.compilations {
                 val main by getting {
-                    cinterops.create("iosComposeAuth")
+                    cinterops.create("nativeBridge")
                 }
             }
         }
@@ -80,11 +80,10 @@ tasks.withType<AndroidLintAnalysisTask> {
 }
 
 swiftPackageConfig {
-    create("iosComposeAuth") {
+    create("nativeBridge") {
         dependency {
             linkerOpts =
                 listOf("-ObjC", "-fObjC")
-            // Google Sign-In SDK
             remotePackageVersion(
                 url = uri("https://github.com/google/GoogleSignIn-iOS.git"),
                 products = {
