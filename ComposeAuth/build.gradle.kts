@@ -42,7 +42,7 @@ kotlin {
             }
             it.compilations {
                 val main by getting {
-                    cinterops.create("nativeBridge")
+                    cinterops.create("iosComposeAuth")
                 }
             }
         }
@@ -80,7 +80,7 @@ tasks.withType<AndroidLintAnalysisTask> {
 }
 
 swiftPackageConfig {
-    create("nativeBridge") {
+    create("iosComposeAuth") {
         dependency {
             linkerOpts =
                 listOf("-ObjC", "-fObjC")
