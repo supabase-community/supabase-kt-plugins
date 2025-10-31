@@ -5,10 +5,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     id(libs.plugins.kotlin.multiplatform.get().pluginId)
-    id("io.github.frankois944.spmForKmp") version "1.0.1"
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.compose.plugin.get().pluginId)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.spm)
 }
 
 description = "Extends gotrue-kt with Native Auth composables"

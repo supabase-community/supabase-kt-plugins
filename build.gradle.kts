@@ -1,10 +1,7 @@
-@file:OptIn(ExperimentalKotlinGradlePluginApi::class)
-
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnLockMismatchReport
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 
-val excludedModules = listOf<String>("test-common")
+val excludedModules = listOf("test-common")
 
 private val libraryFilter = { withFilter: Boolean ->
     allprojects.filter { it.name !in excludedModules && !it.path.contains("sample") && if(withFilter) true else it.name != "bom" && it.name != it.rootProject.name }
@@ -21,6 +18,7 @@ plugins {
     id(libs.plugins.detekt.get().pluginId) apply false
     id(libs.plugins.dokka.get().pluginId)
     alias(libs.plugins.kotlinx.plugin.serialization) apply false
+    alias(libs.plugins.spm) apply false
     id(libs.plugins.maven.publish.get().pluginId) apply false
     id(libs.plugins.power.assert.get().pluginId) apply false
 }

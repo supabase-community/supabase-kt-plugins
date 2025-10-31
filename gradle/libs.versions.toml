@@ -18,7 +18,7 @@ coil3 = "3.3.0"
 okio = "3.16.2"
 credentials = "1.5.0"
 sketch = "4.3.1"
-
+spm = "1.0.1"
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
@@ -29,6 +29,7 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 compose-plugin = { id = "org.jetbrains.compose", version.ref = "compose" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+spm = { id = "io.github.frankois944.spmForKmp", version.ref = "spm" }
 
 power-assert = { id = "org.jetbrains.kotlin.plugin.power-assert", version.ref = "kotlin" }
 
