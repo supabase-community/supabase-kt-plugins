@@ -1,3 +1,5 @@
+# Supabase-kt Compose Auth
+
 Extends gotrue-kt with Native Auth composables for Compose Multiplatform
 
 Supported targets:
