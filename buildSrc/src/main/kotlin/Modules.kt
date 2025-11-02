@@ -16,7 +16,7 @@ enum class SupabaseModule(val module: String, val extern: Boolean = false) {
 fun KotlinDependencyHandler.addModules(vararg modules: SupabaseModule) {
     modules.forEach {
         if(it.extern) {
-            api(it.module + ":" + project.supabaseVersion)
+            api(it.module + ":" + "3.2.6")
         } else {
             api(project(":${it.module}"))
         }
