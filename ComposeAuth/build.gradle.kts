@@ -12,7 +12,7 @@ plugins {
 }
 
 description = "Extends gotrue-kt with Native Auth composables"
-version = supabaseVersion
+version = "3.2.7-SNAPSHOT"
 
 repositories {
     mavenCentral()
