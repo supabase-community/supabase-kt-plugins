@@ -104,7 +104,7 @@ Before start, make sure your iOS app works well first, it would be easier to iso
 2. Create OAuth credentials for a Web application, iOS version
 3. Put in Client ID of Web OAuth, Apple OAuth in your Supabase Auth Settings for Google in the Dashboard
 4. Set up XCode 26
-   Add Client ID and Reversed Client ID (Retrieved from iOS OAuth details on Google Console). Your `Info.plist` will looke like this:
+   Add Client ID and Reversed Client ID (Retrieved from iOS OAuth details on Google Console). Your `Info.plist` will look like this:
 ```swift
 <dict>
 	<key>CFBundleIdentifier</key>
