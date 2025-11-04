@@ -40,40 +40,40 @@ actual fun ComposeAuth.rememberSignInWithGoogle(
 
     LaunchedEffect(key1 = state.status) {
         if (state.status is NativeSignInStatus.Started) {
-            ComposeAuth.logger.d { "Start Oauth flow"}
+            val startedStatus = state.status as NativeSignInStatus.Started
+            ComposeAuth.logger.d { "Start Oauth flow" }
             try {
                 if (config.googleLoginConfig != null) {
-                    ComposeAuth.logger.d { "Config is available"}
-                    val currentNonce = (state.status as? NativeSignInStatus.Started)?.nonce
-                    val currentExtraData = (state.status as? NativeSignInStatus.Started)?.extraData
-                    // Call the signIn method on the Swift controller, passing a lambda for completion
-                    googleSignInController.signInCompletion { idToken, errorMessage, isCancelled ->
-                        scope.launch {
-                            if (isCancelled) {
-                                ComposeAuth.logger.d { "Flow is canceled"}
-                                onResult.invoke(NativeSignInResult.ClosedByUser)
-                            } else if (idToken != null) {
-                                ComposeAuth.logger.d { "Id token available"}
-
-                                onIdToken.invoke(
-                                    composeAuth = this@rememberSignInWithGoogle,
-                                    result = IdTokenCallback.Result(
-                                        idToken = idToken,
-                                        provider = Google,
-                                        nonce = currentNonce,
-                                        extraData = currentExtraData
+                    ComposeAuth.logger.d { "Config is available" }
+                    googleSignInController.signInCompletion(
+                        completion = { idToken, errorMessage, isCancelled ->
+                            scope.launch {
+                                if (isCancelled) {
+                                    ComposeAuth.logger.d { "Flow is canceled" }
+                                    onResult.invoke(NativeSignInResult.ClosedByUser)
+                                } else if (idToken != null) {
+                                    ComposeAuth.logger.d { "Id token available" }
+                                    onIdToken.invoke(
+                                        composeAuth = this@rememberSignInWithGoogle,
+                                        result = IdTokenCallback.Result(
+                                            idToken = idToken,
+                                            provider = Google,
+                                            nonce = startedStatus.nonce,
+                                            extraData = startedStatus.extraData
+                                        )
                                     )
-                                )
-                                onResult.invoke(NativeSignInResult.Success)
-                            } else if (errorMessage != null) {
-                                ComposeAuth.logger.d { "Error happens"}
-                                onResult.invoke(NativeSignInResult.Error(errorMessage))
-                            } else {
-                                // Fallback for unexpected cases
-                                onResult.invoke(NativeSignInResult.Error("Unknown Google sign-in error"))
+                                    onResult.invoke(NativeSignInResult.Success)
+                                } else if (errorMessage != null) {
+                                    ComposeAuth.logger.d { "Error happens" }
+                                    onResult.invoke(NativeSignInResult.Error(errorMessage))
+                                } else {
+                                    // Fallback for unexpected cases
+                                    onResult.invoke(NativeSignInResult.Error("Unknown Google sign-in error"))
+                                }
                             }
-                        }
-                    }
+                        },
+                        nonce = startedStatus.nonce
+                    )
                 } else {
                     fallback.invoke()
                 }
