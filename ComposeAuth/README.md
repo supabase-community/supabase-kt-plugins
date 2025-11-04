@@ -1,3 +1,5 @@
+# Supabase-kt Compose Auth
+
 Extends gotrue-kt with Native Auth composables for Compose Multiplatform
 
 Supported targets:
@@ -102,7 +104,7 @@ Before start, make sure your iOS app works well first, it would be easier to iso
 2. Create OAuth credentials for a Web application, iOS version
 3. Put in Client ID of Web OAuth, Apple OAuth in your Supabase Auth Settings for Google in the Dashboard
 4. Set up XCode 26
-   Add Client ID and Reversed Client ID (Retrieved from iOS OAuth details on Google Console). Your `Info.plist` will looke like this:
+   Add Client ID and Reversed Client ID (Retrieved from iOS OAuth details on Google Console). Your `Info.plist` will look like this:
 ```swift
 <dict>
 	<key>CFBundleIdentifier</key>
@@ -136,6 +138,9 @@ Before start, make sure your iOS app works well first, it would be easier to iso
    Step 3: Continue Add package
    
    <img width="750" height="632" alt="Screenshot 2025-11-01 at 00 38 51" src="https://github.com/user-attachments/assets/92b709fa-57d2-41b5-b066-e391f132231c" />
-   
+
+   Step 4: Add GoogleSignIn 9.0.0 or the one compatible with your project as below:
+   <img width="750" height="452" alt="Screenshot 2025-11-02 at 20 51 45" src="https://github.com/user-attachments/assets/7bdcd805-c3a6-4500-ace9-f5a389cdabdf" />
+
 7. Build your app. It should work now.
 
