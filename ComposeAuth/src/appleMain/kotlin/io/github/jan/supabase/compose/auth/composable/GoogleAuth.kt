@@ -7,6 +7,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import io.github.jan.supabase.auth.providers.Google
+import io.github.jan.supabase.compose.auth.hash
 import io.github.jan.supabase.logging.d
 import kotlinx.cinterop.ExperimentalForeignApi
 import kotlinx.coroutines.ensureActive
@@ -72,7 +73,7 @@ actual fun ComposeAuth.rememberSignInWithGoogle(
                                 }
                             }
                         },
-                        nonce = startedStatus.nonce
+                        nonce = startedStatus.nonce?.hash()
                     )
                 } else {
                     fallback.invoke()
