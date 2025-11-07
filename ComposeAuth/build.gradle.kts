@@ -8,6 +8,7 @@ plugins {
     id(libs.plugins.android.library.get().pluginId)
     id(libs.plugins.compose.plugin.get().pluginId)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.spm)
 }
 
 description = "Extends gotrue-kt with Native Auth composables"
@@ -32,6 +33,20 @@ kotlin {
     }
     jvmToolchain(11)
     composeTargets(JvmTarget.JVM_11)
+    iosTargets()
+    targets.forEach {
+        if (it is org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget) {
+            it.binaries.framework {
+                baseName = "common"
+                isStatic = true
+            }
+            it.compilations {
+                val main by getting {
+                    cinterops.create("nativeBridge")
+                }
+            }
+        }
+    }
     sourceSets {
         commonMain {
             dependencies {
@@ -62,4 +77,23 @@ tasks.withType<LintModelMetadataTask> {
 }
 tasks.withType<AndroidLintAnalysisTask> {
     dependsOn("generateResourceAccessorsForAndroidUnitTest")
+}
+
+swiftPackageConfig {
+    create("nativeBridge") {
+        dependency {
+            linkerOpts =
+                listOf("-ObjC", "-fObjC")
+            remotePackageVersion(
+                url = uri("https://github.com/google/GoogleSignIn-iOS.git"),
+                products = {
+                    add("GoogleSignIn", exportToKotlin = true)
+                },
+                version = "9.0.0",
+            )
+            exportedPackageSettings {
+                includeProduct = listOf("GoogleSignIn")
+            }
+        }
+    }
 }

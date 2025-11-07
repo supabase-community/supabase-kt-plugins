@@ -5,7 +5,7 @@ dokka = "2.1.0"
 coroutines = "1.10.2"
 androidx-activity-compose = "1.11.0"
 multiplatform-settings = "1.3.0"
-agp = "8.9.2"
+agp = "8.11.1"
 maven-publish = "0.34.0"
 apollo-kotlin = "4.3.3"
 detekt = "1.23.8"
@@ -18,7 +18,7 @@ coil3 = "3.3.0"
 okio = "3.16.2"
 credentials = "1.5.0"
 sketch = "4.3.1"
-
+spm = "1.0.1"
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
@@ -29,6 +29,7 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 
 compose-plugin = { id = "org.jetbrains.compose", version.ref = "compose" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+spm = { id = "io.github.frankois944.spmForKmp", version.ref = "spm" }
 
 power-assert = { id = "org.jetbrains.kotlin.plugin.power-assert", version.ref = "kotlin" }
 
