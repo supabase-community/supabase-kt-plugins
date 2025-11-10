@@ -8,7 +8,7 @@ Supported targets:
 |--------|---------|-------------|--------|----------|---------|
 | Status | ✅       | ✅           | ✅      | ✅        | ✅       |
 
-> Native Google Auth is only supported on Android and iOS* and Native Apple Auth is only supported on iOS. Other targets or combinations rely on `gotrue-kt` for OAuth. \
+> Native Google Auth is only supported on Android and iOS* and Native Apple Auth is only supported on iOS. Other targets or combinations rely on `auth-kt` for OAuth. \
 > \* starting with version `3.3.0`
 
 <details>
