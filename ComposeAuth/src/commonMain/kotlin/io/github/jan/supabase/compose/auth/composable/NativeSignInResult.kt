@@ -8,7 +8,7 @@ sealed interface NativeSignInResult {
     /**
      * User successfully signed in
      */
-    data object Success : NativeSignInResult
+    data class Success(val data: SignInResultData) : NativeSignInResult
 
     /**
      * User closed the login dialog
@@ -28,3 +28,12 @@ sealed interface NativeSignInResult {
      */
     data class Error(val message: String, val exception: Exception? = null) : NativeSignInResult
 }
+
+expect sealed interface SignInResultData {
+    class Google : SignInResultData
+    class Apple : SignInResultData
+}
+
+val SignInResultData.apple get() = this as SignInResultData.Apple
+
+val SignInResultData.google get() = this as SignInResultData.Google

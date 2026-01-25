@@ -118,7 +118,7 @@ private class AuthorizationDelegate(
                             onIdToken.invoke(composeAuth,
                                 IdTokenCallback.Result(idToken, Apple, status.nonce, status.extraData)
                             )
-                            onResult.invoke(NativeSignInResult.Success)
+                            onResult.invoke(NativeSignInResult.Success(SignInResultData.Apple(credentials)))
                         } catch(e: Exception) {
                             onResult.invoke(NativeSignInResult.Error(e.message ?: "error"))
                         }
