@@ -66,7 +66,7 @@ actual fun ComposeAuth.rememberSignInWithGoogle(
                                             extraData = startedStatus.extraData
                                         )
                                     )
-                                    onResult.invoke(NativeSignInResult.Success)
+                                    onResult.invoke(NativeSignInResult.Success())
                                 } else if (errorMessage != null) {
                                     ComposeAuth.logger.d { "Error happens due to: $errorMessage" }
                                     onResult.invoke(NativeSignInResult.Error(errorMessage))

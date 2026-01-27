@@ -29,11 +29,28 @@ sealed interface NativeSignInResult {
     data class Error(val message: String, val exception: Exception? = null) : NativeSignInResult
 }
 
+/**
+ * Represents thee result of a successful sign in
+ * @see NativeSignInResult.Success
+ */
 expect sealed interface SignInResultData {
+    /**
+     * The data of a Native Google Sign in
+     */
     class Google : SignInResultData
+
+    /**
+     * The data of a Native Apple Sign in
+     */
     class Apple : SignInResultData
 }
 
+/**
+ * Casts [this] to a [SignInResultData.Apple]
+ */
 val SignInResultData.apple get() = this as SignInResultData.Apple
 
+/**
+ * Casts [this] to a [SignInResultData.Google]
+ */
 val SignInResultData.google get() = this as SignInResultData.Google
