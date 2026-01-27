@@ -132,7 +132,7 @@ private suspend fun parseCredential(
                         GoogleIdTokenCredential.createFrom(credential.data)
                     signInWithGoogle(googleIdTokenCredential.idToken)
                     ComposeAuth.logger.d { "Successfully logged into Supabase with Google ID Token Credential" }
-                    onResult.invoke(NativeSignInResult.Success)
+                    onResult.invoke(NativeSignInResult.Success(SignInResultData.Google(googleIdTokenCredential)))
                 } catch (e: GoogleIdTokenParsingException) {
                     ComposeAuth.logger.e(e) { "Google ID Token parsing exception" }
                     onResult.invoke(
