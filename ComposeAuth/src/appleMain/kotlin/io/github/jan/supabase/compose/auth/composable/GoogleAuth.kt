@@ -1,12 +1,12 @@
 package io.github.jan.supabase.compose.auth.composable
 
 import androidx.compose.runtime.Composable
-import io.github.jan.supabase.compose.auth.ComposeAuth
-import io.github.jan.supabase.compose.auth.IdTokenCallback
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import io.github.jan.supabase.auth.providers.Google
+import io.github.jan.supabase.compose.auth.ComposeAuth
+import io.github.jan.supabase.compose.auth.IdTokenCallback
 import io.github.jan.supabase.compose.auth.hash
 import io.github.jan.supabase.logging.d
 import io.github.jan.supabase.logging.e
@@ -66,7 +66,7 @@ actual fun ComposeAuth.rememberSignInWithGoogle(
                                             extraData = startedStatus.extraData
                                         )
                                     )
-                                    onResult.invoke(NativeSignInResult.Success())
+                                    onResult.invoke(NativeSignInResult.Success(SignInResultData.Google()))
                                 } else if (errorMessage != null) {
                                     ComposeAuth.logger.d { "Error happens due to: $errorMessage" }
                                     onResult.invoke(NativeSignInResult.Error(errorMessage))
