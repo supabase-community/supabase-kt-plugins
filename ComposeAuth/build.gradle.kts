@@ -83,7 +83,7 @@ swiftPackageConfig {
     create("nativeBridge") {
         dependency {
             linkerOpts =
-                listOf("-ObjC", "-fObjC")
+                listOf("-ObjC")
             remotePackageVersion(
                 url = uri("https://github.com/google/GoogleSignIn-iOS.git"),
                 products = {
