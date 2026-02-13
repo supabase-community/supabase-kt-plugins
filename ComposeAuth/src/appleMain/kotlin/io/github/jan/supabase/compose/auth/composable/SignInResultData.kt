@@ -13,6 +13,7 @@ actual sealed interface SignInResultData {
     actual class Google : SignInResultData
     /**
      * The data of a Native Apple Sign in
+     * @param credential The received credential
      */
     actual class Apple(val credential: ASAuthorizationAppleIDCredential) : SignInResultData
 }
