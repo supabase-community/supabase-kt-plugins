@@ -7,6 +7,9 @@ sealed interface NativeSignInResult {
 
     /**
      * User successfully signed in
+     * @param data The data received from the Native Sign-In
+     * @see SignInResultData.apple
+     * @see SignInResultData.google
      */
     data class Success(val data: SignInResultData) : NativeSignInResult
 
