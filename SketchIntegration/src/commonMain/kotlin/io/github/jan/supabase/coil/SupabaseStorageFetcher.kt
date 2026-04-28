@@ -31,7 +31,7 @@ internal class SupabaseStorageFetcher(
     @WorkerThread
     override suspend fun fetch(): Result<FetchResult> {
         val item = request.request.uri.toStorageItem()
-        SketchIntegration.logger.d { "Received fetcher request for item $item" }
+        storage.supabaseClient.sketch.logger.d { "Received fetcher request for item $item" }
         val bucket = storage[item.bucketId]
         val (token, url) = if (item.authenticated) {
             bucket.authenticatedRequest(item.path)

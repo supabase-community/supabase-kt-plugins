@@ -17,7 +17,7 @@ fun ComposeAuth.defaultLoginBehavior(fallback: suspend () -> Unit): NativeSignIn
     val state = remember { NativeSignInState(serializer) }
     LaunchedEffect(key1 = state.status) {
         if (state.status is NativeSignInStatus.Started) {
-            ComposeAuth.logger.d { "Native Auth is not supported on this platform, falling back to default behavior"}
+            logger.d { "Native Auth is not supported on this platform, falling back to default behavior"}
             fallback.invoke()
             state.reset()
         }

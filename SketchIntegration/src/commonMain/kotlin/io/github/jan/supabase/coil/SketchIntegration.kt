@@ -5,6 +5,7 @@ import com.github.panpf.sketch.request.RequestContext
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.annotations.SupabaseExperimental
 import io.github.jan.supabase.logging.SupabaseLogger
+import io.github.jan.supabase.logging.createLogger
 import io.github.jan.supabase.logging.d
 import io.github.jan.supabase.plugins.SupabasePlugin
 import io.github.jan.supabase.plugins.SupabasePluginProvider
@@ -17,6 +18,11 @@ import io.github.jan.supabase.storage.storage
 interface SketchIntegration: SupabasePlugin<SketchIntegration.Config>, Fetcher.Factory {
 
     /**
+     * Plugin's logger
+     */
+    val logger: SupabaseLogger
+
+    /**
      * The configuration for the sketch integration.
      */
     class Config
@@ -24,8 +30,6 @@ interface SketchIntegration: SupabasePlugin<SketchIntegration.Config>, Fetcher.F
     companion object : SupabasePluginProvider<Config, SketchIntegration> {
 
         override val key = "sketch"
-
-        override val logger: SupabaseLogger = SupabaseClient.createLogger("Supabase-Sketch")
 
         override fun create(supabaseClient: SupabaseClient, config: Config): SketchIntegration {
             return SketchIntegrationImpl(supabaseClient, config)
@@ -44,13 +48,15 @@ internal class SketchIntegrationImpl(
     override val config: SketchIntegration.Config
 ) : SketchIntegration {
 
+    override val logger = supabaseClient.createLogger("Supabase-Sketch", null, null)
+
     override fun create(requestContext: RequestContext): Fetcher? {
         val uri = requestContext.request.uri
         if(!isSupabaseUri(uri)) {
-            if(uri.scheme == SupabaseStorageFetcher.SCHEME) SketchIntegration.logger.d { "Invalid Supabase URI: $uri" }
+            if(uri.scheme == SupabaseStorageFetcher.SCHEME) logger.d { "Invalid Supabase URI: $uri" }
             return null
         }
-        SketchIntegration.logger.d { "Creating Storage Fetcher" }
+        logger.d { "Creating Storage Fetcher" }
         return SupabaseStorageFetcher(supabaseClient.storage, requestContext)
     }
 

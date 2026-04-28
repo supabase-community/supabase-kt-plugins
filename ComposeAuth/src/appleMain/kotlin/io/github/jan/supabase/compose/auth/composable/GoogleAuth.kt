@@ -43,20 +43,20 @@ actual fun ComposeAuth.rememberSignInWithGoogle(
     LaunchedEffect(key1 = state.status) {
         if (state.status is NativeSignInStatus.Started) {
             val startedStatus = state.status as NativeSignInStatus.Started
-            ComposeAuth.logger.d { "Starting Native Google Sign In flow on iOS" }
+            logger.d { "Starting Native Google Sign In flow on iOS" }
             try {
                 if (config.googleLoginConfig != null) {
-                    ComposeAuth.logger.d { "Google login config found" }
+                    logger.d { "Google login config found" }
                     val hashedNonce = startedStatus.nonce?.hash()
-                    ComposeAuth.logger.d { "Native Google Sign In Flow${if (hashedNonce != null) " with hashed nonce: $hashedNonce" else ""}" }
+                    logger.d { "Native Google Sign In Flow${if (hashedNonce != null) " with hashed nonce: $hashedNonce" else ""}" }
                     googleSignInController.signInCompletion(
                         completion = { idToken, errorMessage, isCancelled ->
                             scope.launch {
                                 if (isCancelled) {
-                                    ComposeAuth.logger.d { "Native Google Sign In Flow was closed by user" }
+                                    logger.d { "Native Google Sign In Flow was closed by user" }
                                     onResult.invoke(NativeSignInResult.ClosedByUser)
                                 } else if (idToken != null) {
-                                    ComposeAuth.logger.d { "Id token available" }
+                                    logger.d { "Id token available" }
                                     onIdToken.invoke(
                                         composeAuth = this@rememberSignInWithGoogle,
                                         result = IdTokenCallback.Result(
@@ -68,10 +68,10 @@ actual fun ComposeAuth.rememberSignInWithGoogle(
                                     )
                                     onResult.invoke(NativeSignInResult.Success(SignInResultData.Google()))
                                 } else if (errorMessage != null) {
-                                    ComposeAuth.logger.d { "Error happens due to: $errorMessage" }
+                                    logger.d { "Error happens due to: $errorMessage" }
                                     onResult.invoke(NativeSignInResult.Error(errorMessage))
                                 } else {
-                                    ComposeAuth.logger.e { "Error while logging into Supabase with Google ID Token Credential" }
+                                    logger.e { "Error while logging into Supabase with Google ID Token Credential" }
                                 }
                             }
                         },

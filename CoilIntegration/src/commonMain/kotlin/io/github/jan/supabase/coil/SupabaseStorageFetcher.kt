@@ -18,7 +18,7 @@ internal class SupabaseStorageFetcher(
 ) : Fetcher {
 
     override suspend fun fetch(): FetchResult? {
-        CoilIntegration.logger.d { "Received fetcher request for item $item" }
+        storage.supabaseClient.coil.logger.d { "Received fetcher request for item $item" }
         val bucket = storage[item.bucketId]
         val (token, url) = if (item.authenticated) {
             bucket.authenticatedRequest(item.path)
