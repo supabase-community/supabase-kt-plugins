@@ -8,6 +8,7 @@ import io.github.jan.supabase.auth.providers.builtin.IDToken
 import io.github.jan.supabase.auth.status.SessionStatus
 import io.github.jan.supabase.compose.auth.composable.NativeSignInState
 import io.github.jan.supabase.logging.SupabaseLogger
+import io.github.jan.supabase.logging.createLogger
 import io.github.jan.supabase.logging.d
 import io.github.jan.supabase.plugins.CustomSerializationConfig
 import io.github.jan.supabase.plugins.CustomSerializationPlugin
@@ -59,6 +60,11 @@ import kotlinx.coroutines.flow.onEach
 interface ComposeAuth : SupabasePlugin<ComposeAuth.Config>, CustomSerializationPlugin {
 
     /**
+     * Plugin's logger
+     */
+    val logger: SupabaseLogger
+
+    /**
      * Config for [ComposeAuth]
      * @property googleLoginConfig Config for Google Login
      * @property appleLoginConfig Config for Apple Login. Currently a placeholder.
@@ -73,8 +79,6 @@ interface ComposeAuth : SupabasePlugin<ComposeAuth.Config>, CustomSerializationP
     companion object : SupabasePluginProvider<Config, ComposeAuth> {
 
         override val key: String = "composeauth"
-
-        override val logger: SupabaseLogger = SupabaseClient.createLogger("Supabase-ComposeAuth")
 
         /**
          * This callback can be used to sign-in/sign-up a user upon receiving an id token from native auth.
@@ -122,6 +126,7 @@ internal class ComposeAuthImpl(
     private val scope = CoroutineScope(Dispatchers.Default)
 
     override val serializer: SupabaseSerializer = config.serializer ?: supabaseClient.defaultSerializer
+    override val logger = supabaseClient.createLogger("Supabase-ComposeAuth", null, null)
 
     override suspend fun close() {
         scope.cancel()
@@ -132,7 +137,7 @@ internal class ComposeAuthImpl(
             supabaseClient.auth.sessionStatus
                 .onEach {
                     if(it is SessionStatus.NotAuthenticated && it.isSignOut) {
-                        ComposeAuth.logger.d { "Received sign out event from Supabase, clearing any Google credentials..." }
+                        logger.d { "Received sign out event from Supabase, clearing any Google credentials..." }
                         config.googleLoginConfig?.handleSignOut?.invoke()
                     }
                 }

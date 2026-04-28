@@ -4,7 +4,9 @@ import com.apollographql.apollo.ApolloClient
 import io.github.jan.supabase.BuildConfig
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.exceptions.RestException
+import io.github.jan.supabase.logging.LogLevel
 import io.github.jan.supabase.logging.SupabaseLogger
+import io.github.jan.supabase.logging.createLogger
 import io.github.jan.supabase.plugins.MainConfig
 import io.github.jan.supabase.plugins.MainPlugin
 import io.github.jan.supabase.plugins.SupabasePluginProvider
@@ -44,8 +46,6 @@ interface GraphQL: MainPlugin<GraphQL.Config> {
 
         override val key: String = "graphql"
 
-        override val logger: SupabaseLogger = SupabaseClient.createLogger("Supabase-ApolloGraphQL")
-
         /**
          * The current graphql api version
          */
@@ -74,6 +74,7 @@ internal class GraphQLImpl(override val config: GraphQL.Config, override val sup
         addHttpInterceptor(ApolloHttpInterceptor(supabaseClient, config))
         apply(config.apolloConfiguration)
     }.build()
+    override val logger: SupabaseLogger = supabaseClient.createLogger("Supabase-GraphQL", config)
 
     override suspend fun parseErrorResponse(response: HttpResponse): RestException {
         throw UnsupportedOperationException("Use apolloClient for GraphQL requests")

@@ -6,6 +6,7 @@ import coil3.request.Options
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.annotations.SupabaseExperimental
 import io.github.jan.supabase.logging.SupabaseLogger
+import io.github.jan.supabase.logging.createLogger
 import io.github.jan.supabase.logging.d
 import io.github.jan.supabase.plugins.SupabasePlugin
 import io.github.jan.supabase.plugins.SupabasePluginProvider
@@ -18,6 +19,11 @@ import io.github.jan.supabase.storage.storage
 interface Coil3Integration: SupabasePlugin<Coil3Integration.Config>, Fetcher.Factory<StorageItem> {
 
     /**
+     * Plugin's logger
+     */
+    val logger: SupabaseLogger
+
+    /**
      * The configuration for the coil integration.
      */
     class Config
@@ -25,8 +31,6 @@ interface Coil3Integration: SupabasePlugin<Coil3Integration.Config>, Fetcher.Fac
     companion object : SupabasePluginProvider<Config, Coil3Integration> {
 
         override val key = "coil3"
-
-        override val logger: SupabaseLogger = SupabaseClient.createLogger("Supabase-Coil3Integration")
 
         override fun create(supabaseClient: SupabaseClient, config: Config): Coil3Integration {
             return Coil3IntegrationImpl(supabaseClient, config)
@@ -45,8 +49,10 @@ internal class Coil3IntegrationImpl(
     override val config: Coil3Integration.Config
 ) : Coil3Integration {
 
+    override val logger = supabaseClient.createLogger("Supabase-Coil3", null, null)
+
     override fun create(data: StorageItem, options: Options, imageLoader: ImageLoader): Fetcher {
-        Coil3Integration.logger.d { "Creating Storage Fetcher" }
+        logger.d { "Creating Storage Fetcher" }
         return SupabaseStorageFetcher(supabaseClient.storage, data, options, imageLoader)
     }
 
