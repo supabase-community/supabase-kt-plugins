@@ -8,7 +8,7 @@ data class VerifiedUserInfo(
 )
 
 expect class EmailVerifier {
-    fun verify(nonce: String?)
+    fun verify(nonce: String)
 }
 
 @Composable

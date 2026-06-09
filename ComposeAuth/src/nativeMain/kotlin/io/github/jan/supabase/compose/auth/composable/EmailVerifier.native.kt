@@ -6,6 +6,6 @@ actual fun io.github.jan.supabase.compose.auth.ComposeAuth.rememberEmailVerifier
 }
 
 actual class EmailVerifier {
-    actual fun verify(nonce: String?) {
+    actual fun verify(nonce: String) {
     }
 }

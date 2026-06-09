@@ -41,7 +41,7 @@ actual class EmailVerifier {
     }
 
     @OptIn(ExperimentalDigitalCredentialApi::class)
-    actual fun verify(nonce: String?) {
+    actual fun verify(nonce: String) {
         scope.launch {
             try {
                 val credentialManager = CredentialManager.create(activity)
@@ -80,7 +80,7 @@ actual class EmailVerifier {
         }
     }
 
-    private fun buildOpenId4vpRequest(nonce: String?): String {
+    private fun buildOpenId4vpRequest(nonce: String): String {
         val json = buildJsonObject {
             putJsonArray("requests") {
                 addJsonObject {
@@ -88,7 +88,7 @@ actual class EmailVerifier {
                     putJsonObject("data") {
                         put("response_type", "vp_token")
                         put("response_mode", "dc_api")
-                        nonce?.let { put("nonce", it) }
+                        put("nonce", nonce)
                         putJsonObject("dcql_query") {
                             putJsonArray("credentials") {
                                 addJsonObject {

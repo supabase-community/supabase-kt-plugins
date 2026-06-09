@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import io.github.jan.supabase.compose.auth.ComposeAuth
 
 actual class EmailVerifier {
-    actual fun verify(nonce: String?) {
+    actual fun verify(nonce: String) {
     }
 }
 
