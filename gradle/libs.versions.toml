@@ -18,7 +18,7 @@ coil3 = "3.4.0"
 okio = "3.17.0"
 credentials = "1.6.0"
 sketch = "4.4.0"
-spm = "1.9.2"
+spm = "1.9.3"
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
