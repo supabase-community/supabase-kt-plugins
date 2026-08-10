@@ -11,6 +11,7 @@ import io.github.jan.supabase.compose.auth.hash
 import io.github.jan.supabase.logging.d
 import io.github.jan.supabase.logging.e
 import kotlinx.cinterop.ExperimentalForeignApi
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
 import nativeBridge.GoogleSignInController
@@ -57,16 +58,22 @@ actual fun ComposeAuth.rememberSignInWithGoogle(
                                     onResult.invoke(NativeSignInResult.ClosedByUser)
                                 } else if (idToken != null) {
                                     logger.d { "Id token available" }
-                                    onIdToken.invoke(
-                                        composeAuth = this@rememberSignInWithGoogle,
-                                        result = IdTokenCallback.Result(
-                                            idToken = idToken,
-                                            provider = Google,
-                                            nonce = startedStatus.nonce,
-                                            extraData = startedStatus.extraData
+                                    try {
+                                        onIdToken.invoke(
+                                            composeAuth = this@rememberSignInWithGoogle,
+                                            result = IdTokenCallback.Result(
+                                                idToken = idToken,
+                                                provider = Google,
+                                                nonce = startedStatus.nonce,
+                                                extraData = startedStatus.extraData
+                                            )
                                         )
-                                    )
-                                    onResult.invoke(NativeSignInResult.Success(SignInResultData.Google()))
+                                        onResult.invoke(NativeSignInResult.Success(SignInResultData.Google()))
+                                    } catch (e: Exception) {
+                                        currentCoroutineContext().ensureActive()
+                                        logger.e(e) { "Error while logging into Supabase with Google ID Token Credential" }
+                                        onResult.invoke(NativeSignInResult.Error(e.message ?: "error", e))
+                                    }
                                 } else if (errorMessage != null) {
                                     logger.d { "Error happens due to: $errorMessage" }
                                     onResult.invoke(NativeSignInResult.Error(errorMessage))
