@@ -53,32 +53,37 @@ actual fun ComposeAuth.rememberSignInWithGoogle(
                     googleSignInController.signInCompletion(
                         completion = { idToken, errorMessage, isCancelled ->
                             scope.launch {
-                                if (isCancelled) {
-                                    logger.d { "Native Google Sign In Flow was closed by user" }
-                                    onResult.invoke(NativeSignInResult.ClosedByUser)
-                                } else if (idToken != null) {
-                                    logger.d { "Id token available" }
-                                    try {
-                                        onIdToken.invoke(
-                                            composeAuth = this@rememberSignInWithGoogle,
-                                            result = IdTokenCallback.Result(
-                                                idToken = idToken,
-                                                provider = Google,
-                                                nonce = startedStatus.nonce,
-                                                extraData = startedStatus.extraData
+                                try {
+                                    if (isCancelled) {
+                                        logger.d { "Native Google Sign In Flow was closed by user" }
+                                        onResult.invoke(NativeSignInResult.ClosedByUser)
+                                    } else if (idToken != null) {
+                                        logger.d { "Id token available" }
+                                        try {
+                                            onIdToken.invoke(
+                                                composeAuth = this@rememberSignInWithGoogle,
+                                                result = IdTokenCallback.Result(
+                                                    idToken = idToken,
+                                                    provider = Google,
+                                                    nonce = startedStatus.nonce,
+                                                    extraData = startedStatus.extraData
+                                                )
                                             )
-                                        )
-                                        onResult.invoke(NativeSignInResult.Success(SignInResultData.Google()))
-                                    } catch (e: Exception) {
-                                        currentCoroutineContext().ensureActive()
-                                        logger.e(e) { "Error while logging into Supabase with Google ID Token Credential" }
-                                        onResult.invoke(NativeSignInResult.Error(e.message ?: "error", e))
+                                            onResult.invoke(NativeSignInResult.Success(SignInResultData.Google()))
+                                        } catch (e: Exception) {
+                                            currentCoroutineContext().ensureActive()
+                                            logger.e(e) { "Error while logging into Supabase with Google ID Token Credential" }
+                                            onResult.invoke(NativeSignInResult.Error(e.message ?: "error", e))
+                                        }
+                                    } else if (errorMessage != null) {
+                                        logger.d { "Error happens due to: $errorMessage" }
+                                        onResult.invoke(NativeSignInResult.Error(errorMessage))
+                                    } else {
+                                        logger.e { "Error while logging into Supabase with Google ID Token Credential" }
                                     }
-                                } else if (errorMessage != null) {
-                                    logger.d { "Error happens due to: $errorMessage" }
-                                    onResult.invoke(NativeSignInResult.Error(errorMessage))
-                                } else {
-                                    logger.e { "Error while logging into Supabase with Google ID Token Credential" }
+                                } catch (e: Exception) {
+                                    currentCoroutineContext().ensureActive()
+                                    logger.e(e) { "Uncaught error in the Google sign-in result callback" }
                                 }
                             }
                         },

@@ -11,7 +11,9 @@ import io.github.jan.supabase.auth.providers.Apple
 import io.github.jan.supabase.compose.auth.ComposeAuth
 import io.github.jan.supabase.compose.auth.IdTokenCallback
 import io.github.jan.supabase.compose.auth.hash
+import io.github.jan.supabase.logging.e
 import kotlinx.cinterop.BetaInteropApi
+import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
@@ -115,17 +117,29 @@ private class AuthorizationDelegate(
                 ?.let { idToken ->
                     scope.launch {
                         try {
-                            onIdToken.invoke(composeAuth,
-                                IdTokenCallback.Result(idToken, Apple, status.nonce, status.extraData)
-                            )
-                            onResult.invoke(NativeSignInResult.Success(SignInResultData.Apple(credentials)))
-                        } catch(e: Exception) {
-                            onResult.invoke(NativeSignInResult.Error(e.message ?: "error"))
+                            try {
+                                onIdToken.invoke(composeAuth,
+                                    IdTokenCallback.Result(idToken, Apple, status.nonce, status.extraData)
+                                )
+                                onResult.invoke(NativeSignInResult.Success(SignInResultData.Apple(credentials)))
+                            } catch(e: Exception) {
+                                currentCoroutineContext().ensureActive()
+                                composeAuth.logger.e(e) { "Error while logging into Supabase with Apple ID Token Credential" }
+                                onResult.invoke(NativeSignInResult.Error(e.message ?: "error", e))
+                            }
+                        } catch (e: Exception) {
+                            currentCoroutineContext().ensureActive()
+                            composeAuth.logger.e(e) { "Uncaught error in the Apple sign-in result callback" }
                         }
                     }
                 }
         } catch (e: Exception) {
-            onResult.invoke(NativeSignInResult.Error(e.message ?: "error"))
+            composeAuth.logger.e(e) { "Error while parsing the Apple sign-in credential" }
+            try {
+                onResult.invoke(NativeSignInResult.Error(e.message ?: "error", e))
+            } catch (e2: Exception) {
+                composeAuth.logger.e(e2) { "Uncaught error in the Apple sign-in result callback" }
+            }
         }
     }
 
@@ -133,9 +147,13 @@ private class AuthorizationDelegate(
         controller: ASAuthorizationController,
         didCompleteWithError: NSError
     ) {
-        when (didCompleteWithError.code.toUInt()) {
-            1001.toUInt() -> onResult.invoke(NativeSignInResult.ClosedByUser)
-            else -> onResult.invoke(NativeSignInResult.Error(didCompleteWithError.localizedDescription))
+        try {
+            when (didCompleteWithError.code.toUInt()) {
+                1001.toUInt() -> onResult.invoke(NativeSignInResult.ClosedByUser)
+                else -> onResult.invoke(NativeSignInResult.Error(didCompleteWithError.localizedDescription))
+            }
+        } catch (e: Exception) {
+            composeAuth.logger.e(e) { "Uncaught error in the Apple sign-in result callback" }
         }
     }
 }
