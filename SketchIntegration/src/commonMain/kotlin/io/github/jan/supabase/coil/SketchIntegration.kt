@@ -49,6 +49,7 @@ internal class SketchIntegrationImpl(
 ) : SketchIntegration {
 
     override val logger = supabaseClient.createLogger("Supabase-Sketch", null, null)
+    override val sortWeight: Int = 0
 
     override fun create(requestContext: RequestContext): Fetcher? {
         val uri = requestContext.request.uri
