@@ -1,3 +1,6 @@
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
+import org.gradle.api.plugins.ExtensionAware
+import org.gradle.internal.extensions.core.extra
 import org.gradle.kotlin.dsl.assign
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -5,7 +8,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 
 fun KotlinMultiplatformExtension.iosTargets() {
-    iosX64()
+    //iosX64()
     iosArm64()
     iosSimulatorArm64()
 }
@@ -39,13 +42,27 @@ fun KotlinMultiplatformExtension.configuredJvmTarget(jvmTarget: JvmTarget = JvmT
     }
 }
 
-fun KotlinMultiplatformExtension.configuredAndroidTarget(jvmTarget: JvmTarget = JvmTarget.JVM_1_8) {
-    androidTarget {
-        publishLibraryVariants("release", "debug")
-        compilerOptions.jvmTarget = jvmTarget
-    }
+internal fun KotlinMultiplatformExtension.androidLibrary(
+    block: KotlinMultiplatformAndroidLibraryTarget.() -> Unit
+) {
+    (this as ExtensionAware).extensions.configure("androidLibrary", block)
 }
 
+fun KotlinMultiplatformExtension.configuredAndroidTarget(
+    jvmTarget: JvmTarget = JvmTarget.JVM_1_8,
+) {
+    androidLibrary {
+        compilerOptions {
+            this.jvmTarget.set(jvmTarget)
+        }
+        compileSdk = 37
+        minSdk = 23
+        aarMetadata {
+            minCompileSdk = 23
+        }
+        this.namespace = namespace ?: "${project.extra["base-group"].toString().replace("-", ".")}.${project.name.replace("-", "")}.library"
+    }
+}
 @OptIn(ExperimentalKotlinGradlePluginApi::class)
 fun KotlinMultiplatformExtension.jvmTargets(jvmTarget: JvmTarget = JvmTarget.JVM_1_8) {
     configuredAndroidTarget(jvmTarget)
