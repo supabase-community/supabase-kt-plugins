@@ -26,7 +26,7 @@ dependencies {
             api(module.module + ":" + project.supabaseVersion)
         }
         serializers.forEach { serializer ->
-            api("io.github.jan-tennert.supabase:" + serializer + ":" + project.supabaseVersion)
+            api("io.supabase:" + serializer + ":" + project.supabaseVersion)
         }
     }
 }

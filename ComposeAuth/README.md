@@ -29,7 +29,7 @@ Newest version: [![](https://img.shields.io/github/release/supabase-community/su
 
 ```kotlin
 dependencies {
-    implementation("io.github.jan-tennert.supabase:compose-auth:VERSION")
+    implementation("io.supabase:compose-auth:VERSION")
 }
 ```
 
@@ -109,7 +109,7 @@ Before start, make sure your iOS app works well first, it would be easier to iso
 ```swift
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>io.github.jan.supabase.ios</string>
+	<string>io.supabase.ios</string>
 	<key>GIDClientID</key>
 	<string>YOUR_CLIENT_ID</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>

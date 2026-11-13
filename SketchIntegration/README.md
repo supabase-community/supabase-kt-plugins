@@ -28,7 +28,7 @@ Newest version: [![](https://img.shields.io/github/release/supabase-community/su
 
 ```kotlin
 dependencies {
-    implementation("io.github.jan-tennert.supabase.plugins:sketch-integration:VERSION")
+    implementation("io.supabase.plugins:sketch-integration:VERSION")
 }
 ```
 
