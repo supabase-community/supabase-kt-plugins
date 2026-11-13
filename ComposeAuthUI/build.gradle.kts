@@ -62,6 +62,6 @@ tasks.withType<AndroidLintAnalysisTask> {
 
 compose {
     resources {
-        packageOfResClass = "io.github.jan.supabase.compose.auth.ui.resources"
+        packageOfResClass = "io.supabase.compose.auth.ui.resources"
     }
 }

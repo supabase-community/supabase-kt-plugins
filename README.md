@@ -1,6 +1,6 @@
 # Supabase Kotlin Plugins
 
-This repository contains plugins for the [Supabase Kotlin SDK](https://github.com/supabase-community/supabase-kt). Each plugin extends the functionality of the SDK, allowing you to integrate with various libraries and frameworks.
+This repository contains plugins for the [Supabase Kotlin SDK](https://github.com/supabase/supabase-kt). Each plugin extends the functionality of the SDK, allowing you to integrate with various libraries and frameworks.
 
 # Plugins
 
