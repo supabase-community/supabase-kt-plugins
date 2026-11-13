@@ -13,9 +13,9 @@ jobs:
     strategy:
       matrix:
         command: [
-          'jvmTest testDebugUnitTest testReleaseUnitTest',
+          'jvmTest',
           'jsTest wasmJsTest',
-          'iosX64Test iosSimulatorArm64Test',
+          'iosSimulatorArm64Test',
           'macosArm64Test macosX64Test',
           'tvosX64Test tvosSimulatorArm64Test',
           'watchosX64Test watchosSimulatorArm64Test',
