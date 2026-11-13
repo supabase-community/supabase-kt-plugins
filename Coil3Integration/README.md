@@ -25,11 +25,11 @@ Supported targets:
 
 # Installation
 
-Newest version: [![](https://img.shields.io/github/release/supabase-community/supabase-kt?label=)](https://github.com/supabase-community/supabase-kt/releases)
+Newest version: [![](https://img.shields.io/github/release/supabase/supabase-kt?label=)](https://github.com/supabase/supabase-kt/releases)
 
 ```kotlin
 dependencies {
-    implementation("io.supabase:coil3-integration:VERSION")
+    implementation("io.github.jan-tennert.supabase:coil3-integration:VERSION")
 }
 ```
 
