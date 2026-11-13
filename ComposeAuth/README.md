@@ -25,11 +25,11 @@ Supported targets:
 
 # Installation
 
-Newest version: [![](https://img.shields.io/github/release/supabase-community/supabase-kt?label=)](https://github.com/supabase-community/supabase-kt/releases)
+Newest version: [![](https://img.shields.io/github/release/supabase/supabase-kt?label=)](https://github.com/supabase/supabase-kt/releases)
 
 ```kotlin
 dependencies {
-    implementation("io.supabase:compose-auth:VERSION")
+    implementation("io.github.jan-tennert.supabase:compose-auth:VERSION")
 }
 ```
 
@@ -109,7 +109,7 @@ Before start, make sure your iOS app works well first, it would be easier to iso
 ```swift
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>io.supabase.ios</string>
+	<string>io.github.jan.supabase.ios</string>
 	<key>GIDClientID</key>
 	<string>YOUR_CLIENT_ID</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>

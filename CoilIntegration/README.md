@@ -12,11 +12,11 @@ For Compose Multiplatform support, [checkout the Coil 3 integration](/plugins/Co
 
 # Installation
 
-Newest version: [![](https://img.shields.io/github/release/supabase-community/supabase-kt?label=)](https://github.com/supabase-community/supabase-kt/releases)
+Newest version: [![](https://img.shields.io/github/release/supabase/supabase-kt?label=)](https://github.com/supabase/supabase-kt/releases)
 
 ```kotlin
 dependencies {
-    implementation("io.supabase:coil-integration:VERSION")
+    implementation("io.github.jan-tennert.supabase:coil-integration:VERSION")
 }
 ```
 
