@@ -14,7 +14,7 @@ repositories {
 kotlin {
     defaultConfig()
     composeTargets()
-    jvmToolchain(8)
+    jvmToolchain(11)
     sourceSets {
         commonMain {
             dependencies {
