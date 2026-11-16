@@ -60,6 +60,7 @@ fun KotlinMultiplatformExtension.configuredAndroidTarget(
         aarMetadata {
             minCompileSdk = 23
         }
+        withHostTest {}
         this.namespace = namespace ?: "${project.extra["base-group"].toString().replace("-", ".")}.${project.name.replace("-", "")}.library"
     }
 }
