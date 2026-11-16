@@ -65,3 +65,8 @@ compose {
         packageOfResClass = "io.github.jan.supabase.compose.auth.ui.resources"
     }
 }
+// This module has no tests. Compose 1.12 fails jsTest/wasmJsTest here because the
+// library declares no executable binary for Compose UI tests, so skip that check.
+tasks.matching { it.name.startsWith("checkComposeUiTestConfigurationFor") }.configureEach {
+    enabled = false
+}
